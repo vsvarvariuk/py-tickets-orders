@@ -43,7 +43,6 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
     serializer_class = CinemaHallSerializer
 
 
-
 def get_id_int(string: str):
     if not string:
         return []
@@ -51,6 +50,8 @@ def get_id_int(string: str):
         return [int(i) for i in string.split(",")]
     except ValueError:
         return []
+
+
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer

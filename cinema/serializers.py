@@ -138,7 +138,6 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         return value
 
 
-
 class OrderListSerializer(serializers.ModelSerializer):
     tickets = TicketListSerializer(many=True)
 
