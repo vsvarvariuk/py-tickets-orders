@@ -43,18 +43,17 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
     serializer_class = CinemaHallSerializer
 
 
+
+def get_id_int(string: str):
+    if not string:
+        return []
+    try:
+        return [int(i) for i in string.split(",")]
+    except ValueError:
+        return []
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-
-    @staticmethod
-    def get_id_int(string: str):
-        if not string:
-            return []
-        try:
-            return [int(i) for i in string.split(",")]
-        except ValueError:
-            return []
 
     def get_queryset(self):
         queryset = self.queryset
@@ -62,8 +61,8 @@ class MovieViewSet(viewsets.ModelViewSet):
         actors = self.request.query_params.get("actors")
         genres = self.request.query_params.get("genres")
         title = self.request.query_params.get("title")
-        actors_id = self.get_id_int(actors)
-        genres_id = self.get_id_int(genres)
+        actors_id = get_id_int(actors)
+        genres_id = get_id_int(genres)
 
         if actors:
             queryset = queryset.filter(actors__id__in=actors_id)
@@ -88,15 +87,6 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer
 
-    @staticmethod
-    def get_id_int(string: str):
-        if not string:
-            return []
-        try:
-            return [int(i) for i in string.split(",")]
-        except ValueError:
-            return []
-
     def get_queryset(self):
         queryset = self.queryset
         if self.action == "list":
@@ -112,7 +102,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
             movie = self.request.query_params.get("movie")
             date = self.request.query_params.get("date")
 
-            movie_id = self.get_id_int(movie)
+            movie_id = get_id_int(movie)
 
             if movie:
                 queryset = queryset.filter(movie__id__in=movie_id)
@@ -136,7 +126,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
         return MovieSessionSerializer
 
 
-class TicketSet(viewsets.ModelViewSet):
+class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
@@ -147,7 +137,7 @@ class OrderPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class OrderSet(viewsets.ModelViewSet):
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderListSerializer
     pagination_class = OrderPagination

@@ -131,11 +131,12 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         return order
 
     def validate_tickets(self, value):
-        if value:
-            return value
-        raise serializers.ValidationError(
-            "Order must contain at least one ticket."
-        )
+        if not value:
+            raise serializers.ValidationError(
+                "Order must contain at least one ticket."
+            )
+        return value
+
 
 
 class OrderListSerializer(serializers.ModelSerializer):
